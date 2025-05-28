@@ -7,26 +7,36 @@
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f0f2f5;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0c0c0c;
+      color: #f0f0f0;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+      flex-direction: column;
       min-height: 100vh;
     }
 
     .container {
-      background: #fff;
+      background: #121212;
       padding: 2rem;
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-      max-width: 400px;
-      width: 100%;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+      max-width: 500px;
+      width: 90%;
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 1.5rem;
+      color: gold;
+      margin-bottom: 0.5rem;
+    }
+
+    p {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.1rem;
+      color: #ccc;
     }
 
     label {
@@ -38,27 +48,30 @@
     input, textarea {
       width: 100%;
       padding: 0.8rem;
-      margin-bottom: 1rem;
-      border: 1px solid #ccc;
+      margin-bottom: 1.2rem;
+      border: 1px solid #333;
       border-radius: 5px;
       font-size: 1rem;
+      background: #1d1d1d;
+      color: white;
     }
 
     button {
       width: 100%;
-      background: #0070f3;
-      color: white;
+      background: gold;
+      color: black;
       border: none;
       padding: 0.9rem;
       border-radius: 5px;
       font-size: 1rem;
+      font-weight: bold;
       cursor: pointer;
     }
 
     .success {
       text-align: center;
       margin-top: 1rem;
-      color: green;
+      color: lime;
       display: none;
     }
 
@@ -69,33 +82,39 @@
 </head>
 <body>
   <div class="container">
-    <h1>Willkommen bei Arcanum Access</h1>
-    <form id="contact-form" action="https://formspree.io/f/mldbqbgg" method="POST">
-      <label for="email">Deine E-Mail:</label>
+    <h1>ARCANUM ACCESS</h1>
+    <p>Ein Netzwerk jenseits der Sichtbarkeit.<br> Nur durch Einladung. Nur für die Elite.</p>
+    <form id="elite-form" action="https://formspree.io/f/mldbqbgg" method="POST">
+      <label for="name">Vollständiger Name</label>
+      <input type="text" name="name" required>
+
+      <label for="email">E-Mail-Adresse</label>
       <input type="email" name="email" required>
 
-      <label for="message">Nachricht:</label>
-      <textarea name="message" rows="5" required></textarea>
+      <label for="reason">Warum möchten Sie Zugang?</label>
+      <textarea name="reason" rows="4" required></textarea>
 
-      <!-- Honeypot Field -->
+      <label for="xrp">XRP-Adresse (optional)</label>
+      <input type="text" name="xrp">
+
       <input type="text" name="_gotcha" class="honeypot" />
-
-      <button type="submit">Absenden</button>
-      <div class="success" id="success-message">✅ Danke! Wir melden uns bald.</div>
+      <button type="submit">Bewerbung absenden</button>
+      <div class="success" id="success-message">✅ Danke für Ihre Bewerbung.</div>
     </form>
   </div>
 
   <script>
-    const form = document.getElementById('contact-form');
+    const form = document.getElementById('elite-form');
     const success = document.getElementById('success-message');
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
-      const formData = new FormData(form);
-      if (formData.get('_gotcha')) return; // Spam-Schutz
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const data = new FormData(form);
+      if (data.get('_gotcha')) return;
 
       fetch(form.action, {
         method: 'POST',
-        body: formData,
+        body: data,
         headers: {
           'Accept': 'application/json'
         }
@@ -104,7 +123,7 @@
           form.reset();
           success.style.display = 'block';
         } else {
-          alert("Fehler beim Senden.");
+          alert("❌ Fehler beim Senden. Bitte erneut versuchen.");
         }
       });
     });
